@@ -27,6 +27,8 @@ import SoloShuffle from '../activitys/SoloShuffle';
 import LogLine from './LogLine';
 import { VideoCategory } from '../types/VideoCategory';
 
+import { RemoteLog_BroadcastLine, RemoteLog_Connect, RemoteLog_Init, RemoteLog_OnLine } from './remote_logs/RemoteLog';
+RemoteLog_Init();
 /**
  * RetailLogHandler class.
  */
@@ -41,9 +43,11 @@ export default class RetailLogHandler extends LogHandler {
 
     this.combatLogWatcher
       .on('ENCOUNTER_START', async (line: LogLine) => {
+		RemoteLog_BroadcastLine(line);
         await this.handleEncounterStartLine(line);
       })
       .on('ENCOUNTER_END', async (line: LogLine) => {
+		RemoteLog_BroadcastLine(line);
         await this.handleEncounterEndLine(line);
       })
       .on('ZONE_CHANGE', async (line: LogLine) => {
@@ -53,6 +57,7 @@ export default class RetailLogHandler extends LogHandler {
         this.handleSpellAuraAppliedLine(line);
       })
       .on('UNIT_DIED', (line: LogLine) => {
+		RemoteLog_BroadcastLine(line);
         this.handleUnitDiedLine(line);
       })
       .on('ARENA_MATCH_START', async (line: LogLine) => {
@@ -68,11 +73,17 @@ export default class RetailLogHandler extends LogHandler {
         await this.handleChallengeModeEndLine(line);
       })
       .on('COMBATANT_INFO', async (line: LogLine) => {
+		RemoteLog_BroadcastLine(line);
         this.handleCombatantInfoLine(line);
       })
       .on('SPELL_CAST_SUCCESS', async (line: LogLine) => {
         this.handleSpellCastSuccess(line);
       });
+
+	  RemoteLog_OnLine(async (line: string) => {
+		console.log(`[RemoteLog] Line:`, line);
+		this.combatLogWatcher.handleLogLine(line, true);
+	  });
   }
 
   private async handleArenaStartLine(line: LogLine) {
@@ -293,6 +304,8 @@ export default class RetailLogHandler extends LogHandler {
         return;
       }
 
+		// RemoteLog_BroadcastLine(line);
+
       await super.handleEncounterStartLine(line, Flavour.Retail);
       return;
     }
@@ -333,7 +346,6 @@ export default class RetailLogHandler extends LogHandler {
 
       return;
     }
-
     const { category } = this.activity;
     const isChallengeMode = category === VideoCategory.MythicPlus;
 
@@ -341,6 +353,9 @@ export default class RetailLogHandler extends LogHandler {
       console.debug(
         '[RetailLogHandler] Must be raid encounter, calling super method.',
       );
+
+		// RemoteLog_BroadcastLine(line);
+
       await super.handleEncounterEndLine(line);
     } else {
       console.debug('[RetailLogHandler] Challenge mode boss encounter.');

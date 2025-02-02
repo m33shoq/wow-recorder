@@ -85,6 +85,10 @@ export default class ConfigService
       loggable.cloudAccountPassword = '**********';
     }
 
+	if (loggable.RakGamingServerPassword) {
+		loggable.RakGamingServerPassword = '**********';
+	}
+
     console.info('[Config Service] Using configuration', loggable);
 
     this._store.onDidAnyChange((newValue: any, oldValue: any) => {
@@ -250,6 +254,10 @@ export default class ConfigService
     if (newConfig.cloudAccountPassword) {
       newConfig.cloudAccountPassword = '**********';
     }
+
+	if (newConfig.RakGamingServerPassword) {
+		newConfig.RakGamingServerPassword = '**********';
+	}
 
     console.info('[Config Service] Configuration changed:', newConfig);
   }

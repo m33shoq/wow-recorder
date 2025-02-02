@@ -78,6 +78,9 @@ export type ConfigurationSchema = {
   cloudUploadDungeonMinLevel: number;
   cloudUploadClips: boolean;
   language: string;
+  RakGamingServerLogin: string;
+  RakGamingServerPassword: string;
+  RakGamingServerToken: string;
 };
 
 export type ConfigurationSchemaKey = keyof ConfigurationSchema;
@@ -480,5 +483,20 @@ export const configSchema = {
     description: Phrase.LanguageDescription,
     type: 'string',
     default: 'English',
+  },
+  RakGamingServerLogin: {
+    description: 'Server login for remote logging',
+    type: 'string',
+    default: '',
+  },
+  RakGamingServerPassword: {
+    description: 'Server password for remote logging',
+    type: 'string',
+    default: '',
+  },
+  RakGamingServerToken: {
+	description: 'Server token for remote logging',
+	type: 'string',
+	default: '',
   },
 };

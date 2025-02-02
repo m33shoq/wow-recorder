@@ -96,6 +96,9 @@ export const getSettings = (): ConfigurationSchema => {
     cloudUploadDungeonMinLevel: getConfigValue<number>('cloudUploadDungeonMinLevel'),
     cloudUploadClips: getConfigValue<boolean>('cloudUploadClips'),
     language: getConfigValue<string>('language'),
+	RakGamingServerLogin: getConfigValue<string>('RakGamingServerLogin'),
+	RakGamingServerPassword: getConfigValue<string>('RakGamingServerPassword'),
+	RakGamingServerToken: getConfigValue<string>('RakGamingServerToken'),
     /* eslint-enable prettier/prettier */
   };
 

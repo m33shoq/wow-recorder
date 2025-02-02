@@ -201,8 +201,8 @@ export default class CombatLogWatcher extends EventEmitter {
    * Handle a line from the WoW log. Public as this is called by the test
    * button.
    */
-  public handleLogLine(line: string) {
-    const logLine = new LogLine(line);
+  public handleLogLine(line: string, broadcasted: boolean = false) {
+    const logLine = new LogLine(line, broadcasted);
     const logEventType = logLine.type();
     this.emit(logEventType, logLine);
   }

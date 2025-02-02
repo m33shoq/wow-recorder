@@ -68,6 +68,7 @@ import VideoProcessQueue from './VideoProcessQueue';
 import CloudClient from '../storage/CloudClient';
 import DiskSizeMonitor from '../storage/DiskSizeMonitor';
 import RetryableConfigError from '../utils/RetryableConfigError';
+import { RemoteLog_Reconnect } from 'parsing/remote_logs/RemoteLog';
 
 /**
  * The manager class is responsible for orchestrating all the functional
@@ -304,6 +305,11 @@ export default class Manager {
           loggable.cloudAccountPassword = '**********';
         }
 
+		if (loggable.RakGamingServerPassword) {
+			loggable.RakGamingServerPassword = '**********';
+		}
+
+
         console.info(
           '[Manager] Validating and configuring stage',
           stage.name,
@@ -453,6 +459,7 @@ export default class Manager {
       };
 
       this.mainWindow.webContents.send('updateCloudStatus', status);
+	  RemoteLog_Reconnect();
     } catch (error) {
       console.error('[Manager] Error getting cloud status', String(error));
     }
@@ -674,6 +681,8 @@ export default class Manager {
   }
 
   private async validateCloudBaseConfig(config: ObsBaseConfig) {
+	RemoteLog_Reconnect();
+
     const {
       cloudAccountName,
       cloudAccountPassword,
@@ -710,6 +719,7 @@ export default class Manager {
     }
 
     let raceWinner;
+
 
     try {
       const client = new CloudClient(

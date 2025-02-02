@@ -28,13 +28,17 @@ export default class LogLine {
   // Example: '8/3 22:09:58.548'
   public timestamp: string = '';
 
-  constructor(public original: string) {
+  // whether we recieved this line from the rg server
+  public broadcasted: boolean;
+
+  constructor(public original: string, broadcasted = false) {
     this._lineLength = this.original.length;
 
     // Combat log line always has '<timestamp>  <line>' format,
     // that is, two spaces between ts and line.
     this._linePosition = this.original.indexOf('  ') + 2;
     this.timestamp = this.original.substring(0, this._linePosition - 2);
+	this.broadcasted = broadcasted;
 
     // Parse the first argument, which is the event type and will always
     // be needed.

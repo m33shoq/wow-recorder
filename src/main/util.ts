@@ -468,6 +468,7 @@ const getAvailableDisplays = (): OurDisplayType[] => {
  * new version, sends a message to the main window to display a notification.
  */
 const checkAppUpdate = (mainWindow: BrowserWindow | null = null) => {
+	return;
   const options: ClientRequestConstructorOptions = {
     hostname: 'api.github.com',
     protocol: 'https:',

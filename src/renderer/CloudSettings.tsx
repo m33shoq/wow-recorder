@@ -73,6 +73,8 @@ const CloudSettings = (props: IProps) => {
         cloudUploadDungeonMinLevel: config.cloudUploadDungeonMinLevel,
         cloudUploadClips: config.cloudUploadClips,
         chatOverlayOwnImage: config.chatOverlayOwnImage,
+		RakGamingServerLogin: config.RakGamingServerLogin,
+		RakGamingServerPassword: config.RakGamingServerPassword,
       });
 
       // Inform the backend of a settings change so we can update config
@@ -99,6 +101,8 @@ const CloudSettings = (props: IProps) => {
     config.cloudUploadDungeonMinLevel,
     config.cloudUploadClips,
     config.chatOverlayOwnImage,
+	config.RakGamingServerLogin,
+	config.RakGamingServerPassword,
   ]);
 
   const isComponentDisabled = () => {
@@ -627,9 +631,106 @@ const CloudSettings = (props: IProps) => {
     );
   };
 
+  const setRakGamingServerLogin = async (
+	event: React.ChangeEvent<HTMLInputElement>,
+	) => {
+		setConfig((prevState) => {
+			return {
+				...prevState,
+				RakGamingServerLogin: event.target.value,
+			};
+		});
+		console.log('Updated server login:', event.target.value);
+	};
+
+  const getRakGamingAccountNameField = () => {
+	if (isComponentDisabled()) {
+	  return <></>;
+	}
+
+	return (
+	  <div className="flex flex-col w-1/4 min-w-60 max-w-80">
+		<Label htmlFor="RakGamingServerLogin" className="flex items-center">
+		  {"Rak Gaming Login"}
+		  <Tooltip
+			content={"Логин для сервера Rak Gaming"}
+			side="top"
+		  >
+			<Info size={20} className="inline-flex ml-2" />
+		  </Tooltip>
+		</Label>
+		<Input
+		  name="RakGamingServerLogin"
+		  value={config.RakGamingServerLogin}
+		  onChange={setRakGamingServerLogin}
+		  spellCheck={false}
+		  required
+		/>
+		{config.RakGamingServerLogin === '' && (
+		  <span className="text-error text-xs font-semibold mt-1">
+			{getLocalePhrase(appState.language, Phrase.CannotBeEmpty)}
+		  </span>
+		)}
+	  </div>
+	);
+  };
+
+  	const setRakGamingServerPassword = async (
+		event: React.ChangeEvent<HTMLInputElement>,
+	) => {
+		setConfig((prevState) => {
+			return {
+				...prevState,
+				RakGamingServerPassword: event.target.value,
+			};
+		});
+	};
+
+  	const getRakGamingPasswordField = () => {
+		if (isComponentDisabled()) {
+			return <></>;
+		}
+		// finish this
+		return (
+			<div className="flex flex-col w-1/4 min-w-60 max-w-80">
+				<Label htmlFor="RakGamingServerPassword" className="flex items-center">
+					{"Rak Gaming Password"}
+					<Tooltip
+						content={"Пароль для сервра Rak Gaming"}
+						side="top"
+					>
+						<Info size={20} className="inline-flex ml-2" />
+					</Tooltip>
+				</Label>
+				<Input
+					name="RakGamingServerPassword"
+					value={config.RakGamingServerPassword}
+					onChange={setRakGamingServerPassword}
+					spellCheck={false}
+					type="password"
+					required
+				/>
+				{config.RakGamingServerPassword === '' && (
+					<span className="text-error text-xs font-semibold mt-1">
+						{getLocalePhrase(appState.language, Phrase.CannotBeEmpty)}
+					</span>
+				)}
+			</div>
+		);
+	};
+
+
+
   return (
     <div className="flex flex-col gap-y-4 flex-wrap">
+		<div className='flex flex-row gap-4 flex-wrap'>
+	  		{getRakGamingAccountNameField()}
+			{getRakGamingPasswordField()}
+		</div>
+		<Separator className="my-4" />
       {getDisabledText()}
+
+
 
       <div className="flex flex-row">{getCloudSwitch()}</div>
 
@@ -645,6 +746,9 @@ const CloudSettings = (props: IProps) => {
           <Separator className="my-4" />
         </>
       )}
+
+
+
 
       <div className="flex flex-col gap-4">
         <div>{getCloudUploadSwitch()}</div>
